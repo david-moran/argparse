@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.5)
+project(argparse)
+
+enable_testing()
+find_package(GTest REQUIRED)
+
+if (GTEST_FOUND)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    
+    add_executable(argparse-test tests/argparse.cc)
+    target_link_libraries(argparse-test ${GTEST_BOTH_LIBRARIES} pthread)
+    add_test(ArgParseTests argparse-test)
+endif()
