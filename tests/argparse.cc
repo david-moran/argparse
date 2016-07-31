@@ -1,9 +1,11 @@
 #include <string>
 
 #include <gtest/gtest.h>
+#include <set>
 
 #include "exception.hh"
 #include "argument.hh"
+#include "parser.hh"
 
 using namespace argparse;
 
@@ -76,6 +78,86 @@ TEST (argument, has_value) {
     {
         FAIL();
     }
+}
+
+TEST (argument, equals) {
+    argument arg1 {"--foo", "-f" };
+    argument arg2 {"--bar", "-f" };
+    argument arg3 {"--bar", "-b" };
+    
+    ASSERT_EQ(arg1, arg2);
+    ASSERT_EQ(arg2, arg1);
+
+    ASSERT_EQ(arg2, arg3);
+    ASSERT_EQ(arg3, arg2);
+}
+
+TEST (argument, not_equals) {
+    argument arg1 {"--foo", "-f" };
+    argument arg2 {"--bar", "-b" };
+
+    ASSERT_NE(arg1, arg2);
+    ASSERT_NE(arg2, arg1);
+}
+
+TEST (argument, set) {
+    argument arg1 {"--foo", "-f" };
+    argument arg2 {"--bar", "-f" };
+    argument arg3 {"--bar", "-b" };
+    argument arg4 {"--arg", "-a" };
+
+    std::set<argument> arguments;
+
+    arguments.insert(arg1);
+    ASSERT_EQ(arguments.size(), 1);
+
+    arguments.insert(arg2);
+    ASSERT_EQ(arguments.size(), 1);
+
+    arguments.insert(arg3);
+    ASSERT_EQ(arguments.size(), 2);
+
+    arguments.insert(arg4);
+    ASSERT_EQ(arguments.size(), 3);
+}
+
+/////////////////////
+///// Arguments
+/////////////////////
+TEST (parser, parser) {
+    const char* argv[] = {
+        "/usr/local/bin/command",
+        "--foo", "bar",
+    };
+    int argc = sizeof(argv);
+
+    parser p(argc, argv);
+    p.add_argument("test", argument({"--foo", "-f"}).default_value("10"));
+    p.add_argument("test", argument({"--arg", "-a"}).has_value(true));
+
+    try
+    {
+        p.add_argument("test", {"--bar", "-f"});
+        FAIL();
+    }
+    catch(const invalid_argument_exception& ex)
+    {
+    }
+    catch(...)
+    {
+        FAIL();
+    }
+}
+
+TEST (parser, add_argument) {
+    const char* argv[] = {
+        "/usr/local/bin/command",
+        "--foo", "bar",
+        "--dead", "beef",
+        "--other"
+    };
+    int argc = sizeof(argv);
+    parser(argc, argv);
 }
 
 /////////////////////

@@ -7,7 +7,7 @@ argparse_exception::argparse_exception(const std::string& message) noexcept
     : m_message {message}
 { }
 
-const char* argparse_exception::what() const noexcept
+inline const char* argparse_exception::what() const noexcept
 { return m_message.c_str(); }
 
 }

@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <string>
-#include <vector>
+#include <set>
 
 #include "exception.hh"
 
@@ -13,10 +13,10 @@ namespace argparse
 class argument
 {
 public:
-    using names = std::vector<std::string>;
+    using names_set = std::set<std::string>;
     
 private:
-    names m_names;
+    names_set m_names;
 
     std::string m_default_value     {};
     bool m_has_default_flag         {false};
@@ -25,13 +25,19 @@ private:
     bool m_has_value_flag           {false};
 
 public:
-    argument(std::initializer_list<std::string> names) noexcept;
+    argument(std::initializer_list<std::string> names);
 
-    void default_value(const std::string& v);
-    void has_value(bool v);
+    argument& default_value(const std::string& v);
+    argument& has_value(bool v);
 
     const std::string& default_value() const noexcept;
     bool has_value() const noexcept;
+
+    const names_set& names() const noexcept;
+
+    bool operator==(const argument& other) const noexcept;
+    bool operator!=(const argument& other) const noexcept;
+    bool operator<(const argument& other) const noexcept;
 };
 
 }

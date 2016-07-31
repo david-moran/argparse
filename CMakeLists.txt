@@ -5,7 +5,7 @@ add_compile_options(-std=c++1y)
 enable_testing()
 find_package(GTest REQUIRED)
 
-add_library(argparse src/exception.cc src/argument.cc)
+add_library(argparse src/exception.cc src/argument.cc src/parser.cc)
 
 if (GTEST_FOUND)
     include_directories(${GTEST_INCLUDE_DIRS} src)
