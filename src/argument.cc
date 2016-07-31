@@ -10,6 +10,14 @@ argument::argument(std::initializer_list<std::string> names)
         throw invalid_argument_exception("No names given for this argument");
 }
 
+argument& argument::value(const std::string& value_) noexcept
+{
+    m_value_flag = true;
+    m_value = value_;
+
+    return *this;
+}
+
 argument& argument::default_value(const std::string& v)
 {
     if (m_has_value_flag && has_value() == false)

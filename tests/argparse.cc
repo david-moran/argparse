@@ -121,6 +121,35 @@ TEST (argument, set) {
     ASSERT_EQ(arguments.size(), 3);
 }
 
+TEST (argument, as) {
+    argument arg1 {"--foo", "-f" };
+    argument arg2 {"--bar", "-b" };
+    argument arg3 {"--arg", "-a" };
+    argument arg4 {"--dead", "-d" };
+
+    arg1.value("100");
+    arg2.value("12.3456");
+    arg3.value("text");
+
+    ASSERT_EQ(arg1.as<int>(), 100);
+    ASSERT_EQ(arg2.as<float>(), 12.3456F);
+    ASSERT_EQ(arg2.as<double>(), static_cast<double>(12.3456));
+    ASSERT_EQ(arg3.as<std::string>(), "text");
+
+    try
+    {
+        arg4.as<int>();
+        FAIL();
+    }
+    catch(const required_argument_exception& ex)
+    {
+    }
+    catch(...)
+    {
+        FAIL();
+    }
+}
+
 /////////////////////
 ///// Arguments
 /////////////////////
