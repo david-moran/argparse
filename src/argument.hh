@@ -28,15 +28,23 @@ private:
     bool m_has_value                {false};
     bool m_has_value_flag           {false};
 
+    bool m_required                 {false};
+
+    std::string m_description         {};
+
 public:
     argument(std::initializer_list<std::string> names);
 
     argument& value(const std::string& value) noexcept;
     argument& default_value(const std::string& v);
     argument& has_value(bool v);
+    argument& required(bool r) noexcept;
+    argument& description(const std::string& d) noexcept;
 
     const std::string& default_value() const noexcept;
     bool has_value() const noexcept;
+    bool required() const noexcept;
+    const std::string& description() const noexcept;
 
     const names_set& names() const noexcept;
 

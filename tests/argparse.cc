@@ -161,8 +161,11 @@ TEST (parser, parser) {
     int argc = sizeof(argv);
 
     parser p(argc, argv);
-    p.add_argument("test", argument{"--foo", "-f"}.default_value("10"));
-    p.add_argument("test", argument{"--arg", "-a"}.has_value(true));
+    p.add_argument("test", argument{"--foo", "-f"}
+        .description("this is a test").default_value("10"));
+
+    p.add_argument("test", argument{"--arg", "-a"}
+        .required(true).has_value(true));
 
     try
     {

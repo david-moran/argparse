@@ -24,4 +24,11 @@ void parser::add_argument(const std::string& destination,
     m_arguments[argument] = destination;
 }
 
+std::string parser::help() const noexcept
+{
+    // TODO
+    return std::string();    
+}
+
+
 }

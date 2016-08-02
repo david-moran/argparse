@@ -41,11 +41,29 @@ argument& argument::has_value(bool v)
     return *this;
 }
 
+argument& argument::required(bool r) noexcept
+{
+    m_required = r;
+    return *this;
+}
+
+argument& argument::description(const std::string& d) noexcept
+{
+    m_description = d;
+    return *this;
+}
+
 inline const std::string& argument::default_value() const noexcept
 { return m_default_value; }
 
 inline bool argument::has_value() const noexcept
 { return m_has_value; }
+
+inline bool argument::required() const noexcept
+{ return m_required; }
+
+inline const std::string& argument::description() const noexcept
+{ return m_description; }
 
 inline const argument::names_set& argument::names() const noexcept
 { return m_names; }
