@@ -30,9 +30,10 @@ private:
 
     bool m_required                 {false};
 
-    std::string m_description         {};
+    std::string m_description       {};
 
 public:
+    argument() = default;
     argument(std::initializer_list<std::string> names);
 
     argument& value(const std::string& value) noexcept;
@@ -64,7 +65,8 @@ T argument::as() const
     if (!m_value_flag)
     {
         if (!m_has_default_flag)
-            throw required_argument_exception("argument does not exists");
+            throw required_argument_exception(
+                "This argument should not have value");
 
         value = m_default_value;
     }

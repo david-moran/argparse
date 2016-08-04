@@ -53,19 +53,19 @@ argument& argument::description(const std::string& d) noexcept
     return *this;
 }
 
-inline const std::string& argument::default_value() const noexcept
+const std::string& argument::default_value() const noexcept
 { return m_default_value; }
 
-inline bool argument::has_value() const noexcept
+bool argument::has_value() const noexcept
 { return m_has_value; }
 
-inline bool argument::required() const noexcept
+bool argument::required() const noexcept
 { return m_required; }
 
-inline const std::string& argument::description() const noexcept
+const std::string& argument::description() const noexcept
 { return m_description; }
 
-inline const argument::names_set& argument::names() const noexcept
+const argument::names_set& argument::names() const noexcept
 { return m_names; }
 
 bool argument::operator==(const argument& other) const noexcept

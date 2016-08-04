@@ -158,7 +158,7 @@ TEST (parser, parser) {
         "/usr/local/bin/command",
         "--foo", "bar",
     };
-    int argc = sizeof(argv);
+    int argc = sizeof(*argv);
 
     parser p(argc, argv);
     p.add_argument("test", argument{"--foo", "-f"}
@@ -188,8 +188,40 @@ TEST (parser, add_argument) {
         "--dead", "beef",
         "--other"
     };
-    int argc = sizeof(argv);
+    int argc = sizeof(*argv);
     parser(argc, argv);
+}
+
+TEST (parser, parse) {
+    const char* argv[] = {
+        "/usr/local/bin/command",
+        "--foo", "bar",
+        "--required", "arg",
+        "--max", "1000",
+        "-d"
+    };
+    int argc = sizeof(*argv);
+    parser p(argc, argv);
+
+    p.add_argument("foo", argument{"--foo", "-f"}
+        .required(true).has_value(true));
+
+    p.add_argument("required", argument{"--required"}
+        .required(true).has_value(true));
+
+    p.add_argument("max", argument{"--max", "-m"}
+        .required(true).has_value(true));
+
+    p.add_argument("daemon", argument{"--daemon", "-d"}
+        .required(true));
+
+    auto parsed = p.parse();
+
+    ASSERT_EQ(parsed["foo"].as<std::string>(), std::string("bar"));
+    ASSERT_EQ(parsed["required"].as<std::string>(), std::string("arg"));
+    ASSERT_EQ(parsed["max"].as<int>(), 1000);
+    ASSERT_FALSE(parsed.find("daemon") == parsed.cend());
+    ASSERT_TRUE(parsed.find("notexists") == parsed.cend());
 }
 
 /////////////////////

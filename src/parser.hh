@@ -36,7 +36,7 @@ public:
 
     std::string help() const noexcept;
 
-//    parsed_arguments parse() const;
+    parsed_arguments parse() const;
 };
 
 }
